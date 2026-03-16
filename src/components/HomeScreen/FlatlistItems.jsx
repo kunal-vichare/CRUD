@@ -1,9 +1,14 @@
 import { View, Text, StyleSheet,Image, TouchableOpacity} from 'react-native'
-import React from 'react'
+import React,{ useState } from 'react'
+import DropIcon from 'react-native-vector-icons/FontAwesome';
+import {Menu, Divider,Modal, Portal} from 'react-native-paper';
 
 const FlatlistItems = ({item,navigation}) => {
+  const [visible, setVisible] = useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
   return (
-<View style={styles.contactItem}>
+    <View style={styles.contactItem}>
       <Image 
       source={{uri : item.avatar}}
       style={styles.image}
@@ -15,25 +20,24 @@ const FlatlistItems = ({item,navigation}) => {
       </View>
 
       <View style={styles.btnContainer}>
-        <TouchableOpacity 
-        style={styles.editButton}
-        onPress= {()=> navigation.navigate('Add_Edit_user',{user : item, mode : 'edit'})}
+        <Menu 
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <TouchableOpacity 
+              onPress={openMenu}
+              style={styles.sortBtn}
+            >
+              <DropIcon name="chevron-down" size ={16} />
+            </TouchableOpacity>
+          }
         >
-          <Text style={{fontSize : 15,color:'#fff', fontWeight : 'bold',color:'#484747'}}>
-            Edit
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.deleteButton}
-         onPress= {()=> navigation.navigate('Add_Edit_user',{user : item, mode : 'delete'})}
-        >
-          <Text style={{fontSize : 15,color:'#fff', fontWeight : 'bold', color : 'red'}}>
-            Delete
-          </Text>
-        </TouchableOpacity>
+            <Menu.Item onPress={()=> navigation.navigate('Add_Edit_user',{user : item, mode : 'edit'})} title="Edit" />
+            <Divider/>
+            <Menu.Item onPress={()=> navigation.navigate('Add_Edit_user',{user : item, mode : 'delete'})} title="Delete" />
+        </Menu>
       </View>
-    </View>
-    
+    </View>  
   )
 }
 
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
   },
     btnContainer: {
       position:'absolute',
-      marginLeft: 340,
+      marginLeft: 370,
     }
 })
 

@@ -5,7 +5,6 @@ import Filter from 'react-native-vector-icons/Ionicons';
 import {Menu, Divider,Modal, Portal} from 'react-native-paper';
 import { Dropdown } from 'react-native-paper-dropdown';
 
-
 const SortandFilter = () => {
   const [upload, setUpload] = useState('');
   const [status, setStatus] = useState('');
