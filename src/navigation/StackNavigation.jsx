@@ -18,20 +18,8 @@ const StackNavigation = () => {
       <Stack.Screen 
         name='All users' 
         component={Home_Screen} 
-        options={({navigation})=>({
-          headerRight : ()=>(
-            <TouchableOpacity 
-            onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
-            >
-              <PlusSquare name="plus-square" size={40}/>
-            </TouchableOpacity>
-          ),
-          headerBackVisible: false,
-          title: 'All Users',
-          headerTitleStyle: {
-            fontSize:25,
-            fontWeight:'bold',
-          },
+        options={()=>({
+          headerShown : false
         })}
       />
 

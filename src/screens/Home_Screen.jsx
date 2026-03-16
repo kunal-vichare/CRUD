@@ -5,6 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Searchbar from "../components/HomeScreen/Searchbar";
 import FlatlistItems from "../components/HomeScreen/FlatlistItems";
 import Floatingbtn from "../components/HomeScreen/Floatingbtn";
+import Header from "../components/HomeScreen/Header";
 
 const Home_Screen = ({ navigation }) => {
 
@@ -38,6 +39,7 @@ const Home_Screen = ({ navigation }) => {
   return (
     <View > 
       <StatusBar hidden={true}/>
+      <Header />
       <Searchbar search={search} setSearch={setSearch}/>
 
       <View style={{height: '88%', flexGrow: 0}}>
