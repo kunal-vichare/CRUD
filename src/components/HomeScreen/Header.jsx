@@ -1,26 +1,141 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, StyleSheet,TextInput } from 'react-native'
+import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
 import Filter from 'react-native-vector-icons/Feather';
 import Search from 'react-native-vector-icons/Feather';
+import Add from 'react-native-vector-icons/Feather';
+import Close from 'react-native-vector-icons/Fontisto';
+// import Search from 'react-native-vector-icons/Feather';
+import { Divider } from 'react-native-paper';
 
-const Header = () => {
+const Header = ({search,setSearch}) => {
+    const [showSearch,setShowSearch] = useState(false);
+    const navigation = useNavigation();
   return (
-    <View style={{flexDirection:'row'}}>
-        <View>
-            <Text>User</Text>
-            <Text>View All</Text>
+    <View>
+        <View style={styles.container}>
+            <View style={styles.textContainer}>
+                <Text style={styles.userText}>User</Text>
+                <Text style={styles.viewAllText}>View All</Text>
+            </View>
+            <View style={styles.btnContainer}>
+                <TouchableOpacity 
+                    style={styles.filterBtn}
+                    onPress={()=>{navigation.navigate("Filters")}}
+                >
+                    <Filter name="filter" size={30} />
+                </TouchableOpacity>
+                <Text style={styles.divider}>|</Text>
+                <TouchableOpacity 
+                    style= {!showSearch ? styles.inactiveSearchBtn : styles.activeSearchBtn }
+                    onPress={()=>setShowSearch(true)}
+                >
+                    <Search name="search" size={30} />
+                </TouchableOpacity>
+                <Text style={styles.divider}>|</Text>
+                <TouchableOpacity 
+                    style={styles.addBtn}
+                    onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
+                >
+                    <Add name="plus-circle" size={30} />
+                </TouchableOpacity>
+            </View>
         </View>
-        <View style={{flexDirection:'row'}}>
-        <TouchableOpacity>
-            <Filter name="filter" size={20} />
-        </TouchableOpacity>
-        <Text>|</Text>
-        <TouchableOpacity>
-            <Search name="search" size={20} />
-        </TouchableOpacity>
-        </View>
+        <Divider style={{height:2,marginTop:10}}/>
+        {showSearch && 
+            <View style={styles.searchBar}>
+            <TextInput
+                placeholder='Search users'
+                placeholderTextColor={"#474646"}
+                value={search}
+                onChangeText={setSearch}
+                style= {styles.search}
+            />
+            <Search name="search" size={24} style={styles.searchIcon}/>
+            <TouchableOpacity 
+            style={styles.closeContainer}
+            onPress={()=>setShowSearch(false)}>
+                <Close name="close" size={35} />
+            </TouchableOpacity>
+            </View>
+        }
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+    container : {
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    btnContainer : {
+        flex : 1,
+        justifyContent: 'flex-end',
+        flexDirection: 'row',
+    },
+    textContainer : {
+        flexDirection : 'column',
+        marginLeft : 22,
+    },
+    userText : {
+        fontSize:20,
+        fontWeight:'800'
+    },
+    viewAllText : {
+        fontSize:15,
+        fontWeight:'500'
+    },
+    filterBtn : {
+        padding:5,
+        marginRight: 5
+    },
+    inactiveSearchBtn : {
+        padding:5,
+        marginRight: 5
+    },
+    activeSearchBtn : {
+        padding:5,
+        marginRight: 5,
+        backgroundColor:'#628fff',
+        borderRadius:20
+    },
+    addBtn : {
+        padding:5,
+        marginRight: 5
+    },
+    divider : {
+        marginRight: 5,
+        fontSize: 25,
+        fontWeight : '900'
+    },
+        search : {
+        borderColor : 'black',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingLeft :40,
+        marginTop: 10,
+        marginBottom: 10,
+        // backgroundColor : '#e1fcfc',
+        marginRight: 12,
+        width:'85%',
+    },
+    searchBar : {
+        // position: 'relative',
+        flexDirection:'row',
+        backgroundColor: '#fff',
+        marginLeft:15,
+        // marginRight:15,
+        // alignItems:'center',
+    },
+        searchIcon : {
+        position :'absolute', 
+        marginTop:18,
+        marginLeft:10,
+    },
+        closeContainer : {
+            marginTop:12
+        }
+
+})
 
 export default Header

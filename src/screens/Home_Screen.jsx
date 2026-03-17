@@ -2,7 +2,6 @@ import { View, FlatList,StatusBar} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {getAllUsers} from "../services/api";
 import { useFocusEffect } from '@react-navigation/native';
-import Searchbar from "../components/HomeScreen/Searchbar";
 import FlatlistItems from "../components/HomeScreen/FlatlistItems";
 import Floatingbtn from "../components/HomeScreen/Floatingbtn";
 import Header from "../components/HomeScreen/Header";
@@ -21,6 +20,7 @@ const Home_Screen = ({ navigation }) => {
     React.useCallback(() => {
       loadUsers();
       return () => {
+        // loadUsers();
 
       };
     }, [])
@@ -39,8 +39,8 @@ const Home_Screen = ({ navigation }) => {
   return (
     <View > 
       <StatusBar hidden={true}/>
-      <Header />
-      <Searchbar search={search} setSearch={setSearch}/>
+      <Header search={search} setSearch={setSearch}/>
+      {/* <Searchbar search={search} setSearch={setSearch}/> */}
 
       <View style={{height: '88%', flexGrow: 0}}>
         <FlatList

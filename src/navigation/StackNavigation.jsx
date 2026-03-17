@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PlusSquare from 'react-native-vector-icons/Feather';
 import Home_Screen from '../screens/Home_Screen';
 import Add_Edit_user from '../screens/Add_Edit_user';
+import Filters from '../components/HomeScreen/SubComponents/Filters';
+import Role from '../components/HomeScreen/SubComponents/Role';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,20 @@ const StackNavigation = () => {
         component={Home_Screen} 
         options={()=>({
           headerShown : false
+        })}
+      />
+      <Stack.Screen 
+        name='Filters' 
+        component={Filters} 
+        options={()=>({
+          headerShown : true
+        })}
+      />
+      <Stack.Screen 
+        name='Role' 
+        component={Role} 
+        options={()=>({
+          headerShown : true
         })}
       />
 
