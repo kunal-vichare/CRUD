@@ -18,8 +18,12 @@ const Filters = () => {
     const closeModal = () => setModalVisible(false);
     const navigation = useNavigation();
     const route = useRoute();
-    const trueCount = route.params?.trueCount;
+    const trueCount = route.params?.trueCount || null;
+    const activeRoles = route.params?.activeRoles || null;
+    console.log(activeRoles)
 
+    const trueStatusCount = Object.values(status).filter(item => item === true).length;
+    const activeStatus = Object.keys(status).find(item=>status[item]===true);
   return (
   <View style={styles.container}>
     <View style={styles.filterContainer}>
@@ -42,11 +46,26 @@ const Filters = () => {
                         Select
                     </Text>
                 </View>
-                <View style={{marginLeft:300}}>
-                    <Arrow name="greater-than" size={18}/>
+                <View style={styles.arrowContainer}>
+                    <Arrow name="greater-than" size={18} style={styles.arrow}/>
                 </View>
             </TouchableOpacity>
         </View>
+
+        {!trueStatusCount>0 && (
+          <View style={styles.rolesContainer}>
+          {activeRoles?.map((item,index) => (
+                <View 
+                  key={index} 
+                  style={styles.roleItemsContainer}>
+                <Text  
+                  style={styles.rolesText}>
+                  {item}
+                </Text>
+              </View>
+              ))}
+          </View>
+        )}
     </View>
 
     <View style={styles.filterContainer}>
@@ -58,16 +77,24 @@ const Filters = () => {
                 style={styles.roleBtn}
                 onPress={openModal}
             >
-                <View style={{}}>
-                    <Text style={styles.selectText}>
+                <View>
+                  <Text style={styles.selectText}>
                         Select
-                    </Text>
+                  </Text>                  
                 </View>
-                <View style={{marginLeft:300}}>
-                    <Arrow name="greater-than" size={18}/>
+                <View style={styles.arrowContainer}>
+                    <Arrow name="greater-than" size={18} style={styles.arrow}/>
                 </View>
             </TouchableOpacity>
         </View>
+                  {
+                    trueStatusCount>0 && 
+                    <View style={styles.showStatus}> 
+                    <Text style={styles.statusText}>
+                      {activeStatus}
+                    </Text> 
+                    </View>
+                  }
 
         <View style={styles.bottomBtnContainer}>
           <View style={styles.btnWrap}>
@@ -175,7 +202,8 @@ const styles = StyleSheet.create({
   },
   selectText : {
     fontSize:18,
-    fontWeight: '500'
+    fontWeight: '500',
+    
   },
     closeContainer : {
     marginBottom : 30,
@@ -204,9 +232,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255, 255, 255)',
   },
   bottomBtnContainer : {
-    top:550
+    // top:550
   },
   btnWrap: {
+    position:'absolute',
+    top:480,
+    left:100,
     flexDirection:'row',
     height:70,
     borderTopRightRadius:40,
@@ -215,6 +246,9 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   clearBtn : {
+    // position:'absolute',
+    // top:350,
+    // left :-10,
     backgroundColor : '#5f5e5e',
     padding : 15,
     borderRadius : 15,
@@ -222,6 +256,7 @@ const styles = StyleSheet.create({
     marginRight:50,
   },
   applyBtn : {
+    // position:'absolute',
     backgroundColor : '#4040f7',
     padding : 15,
     borderRadius : 15,
@@ -259,7 +294,43 @@ const styles = StyleSheet.create({
     fontSize : 20,
     fontWeight:'700',
     color: '#fff'
+  },
+  arrow : {
+
+  },
+  arrowContainer : {
+    position:'absolute',
+    left:350,
+    top:10
+  },
+  showStatus : {
+    backgroundColor:'#d3f7f7',
+    borderRadius:20,
+    marginTop: 10,
+    padding:5,
+    borderWidth:1
+  },
+   statusText : {
+    fontSize:20,
+    fontWeight:'700',
+    marginLeft : 15,
+  },
+  rolesContainer : {
+
+  },
+  roleItemsContainer : {
+    backgroundColor:'#d3f7f7',
+    borderRadius:20,
+    marginTop: 10,
+    padding:5,
+    borderWidth:1
+  },
+  rolesText : {
+    fontSize:20,
+    fontWeight:'700',
+    marginLeft : 15,
   }
+
 })
 
 export default Filters

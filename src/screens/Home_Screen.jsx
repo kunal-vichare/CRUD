@@ -10,6 +10,12 @@ const Home_Screen = ({ navigation }) => {
 
   // Get all users
   const [myData,setMyData] = useState([ ]);
+  // const [filteredData,setFilteredData] = ([])
+  // const applyFilter = () => {
+  //   let tempData = [...myData];
+
+  //   if()
+  // }
 
   const loadUsers = async() => {
     const data = await getAllUsers();
@@ -42,7 +48,7 @@ const Home_Screen = ({ navigation }) => {
       <Header search={search} setSearch={setSearch}/>
       {/* <Searchbar search={search} setSearch={setSearch}/> */}
 
-      <View style={{height: '88%', flexGrow: 0}}>
+      <View style={{height: '92%', flexGrow: 0}}>
         <FlatList
           data={filteredContacts}
           renderItem={({item})=>(

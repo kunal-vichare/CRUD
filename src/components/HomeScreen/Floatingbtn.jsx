@@ -3,7 +3,7 @@ import Plus from 'react-native-vector-icons/FontAwesome';
 
 const Floatingbtn = ({navigation}) => {
   return (
-      <View style={{backgroundColor: '#fff'}}>
+      <View style={styles.floatingContainer}>
         <TouchableOpacity style={styles.floatingButton} onPress= {()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}>       
           <Plus name="plus" 
           size={24} 
@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
   },
+  floatingContainer:{
+    position:'absolute',
+    // backgroundColor: '#fff',
+    top: 825,
+    left:2
+  }
 })
 
 export default Floatingbtn

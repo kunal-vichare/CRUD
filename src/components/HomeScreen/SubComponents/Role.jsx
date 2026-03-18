@@ -15,7 +15,8 @@ const Role = () => {
   const navigation = useNavigation();
 
   const trueCount = Object.values(role).filter(item => item === true).length;
-
+  const activeRoles = Object.keys(role).filter(item=>role[item]===true)
+  // console.log(activeRoles)
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>
@@ -76,7 +77,7 @@ const Role = () => {
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.confirmBtn}
-                    onPress={()=>{navigation.navigate("Filters",{trueCount : trueCount})}}
+                    onPress={()=>{navigation.navigate("Filters",{trueCount : trueCount,activeRoles:activeRoles})}}
                   >
                     <Text style={styles.applyText}>
                       Confirm
