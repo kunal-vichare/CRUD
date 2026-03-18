@@ -5,12 +5,11 @@ import Arrow from 'react-native-vector-icons/FontAwesome6';
 import Cross from 'react-native-vector-icons/Entypo';
 import Circle from 'react-native-vector-icons/Feather';
 import Check_Circle from 'react-native-vector-icons/Feather';
-
+import { useRoute } from '@react-navigation/native';
 
 const Filters = () => {
-    // const[active,setActive] = useState(false);
-    // const[inActive,setInActive] = useState(false);
     const[status,setStatus] = useState({
+      all: false,
       active : false,
       inactive : false
     })
@@ -18,9 +17,8 @@ const Filters = () => {
     const openModal = () => setModalVisible(true);
     const closeModal = () => setModalVisible(false);
     const navigation = useNavigation();
-    // const [status, setStatus] = useState('');
-
-
+    const route = useRoute();
+    const trueCount = route.params?.trueCount;
 
   return (
   <View style={styles.container}>
@@ -28,18 +26,24 @@ const Filters = () => {
         <Text style={styles.filterHeader}>
             Role
         </Text>
+        { trueCount>0 && (
+        <View style={styles.badgeContainer}>
+          <Text style={styles.badgeText}>{trueCount}</Text>
+        </View>
+        )}
+
         <View style={styles.btnContainer}>
             <TouchableOpacity 
               style={styles.roleBtn}
               onPress={()=>{navigation.navigate("Role")}}
             >
-                <View style={{}}>
+                <View>
                     <Text style={styles.selectText}>
                         Select
                     </Text>
                 </View>
                 <View style={{marginLeft:300}}>
-                    <Arrow name="greater-than" size={18} style={{}}/>
+                    <Arrow name="greater-than" size={18}/>
                 </View>
             </TouchableOpacity>
         </View>
@@ -60,7 +64,7 @@ const Filters = () => {
                     </Text>
                 </View>
                 <View style={{marginLeft:300}}>
-                    <Arrow name="greater-than" size={18} style={{}}/>
+                    <Arrow name="greater-than" size={18}/>
                 </View>
             </TouchableOpacity>
         </View>
@@ -72,7 +76,10 @@ const Filters = () => {
                 Clear
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.applyBtn}>
+            <TouchableOpacity 
+              style={styles.applyBtn}
+              onPress={()=>{navigation.navigate("All users",{trueCount : trueCount})}}
+            >
               <Text style={styles.applyText}>
                 Apply
               </Text>
@@ -80,13 +87,11 @@ const Filters = () => {
           </View>
         </View>
     </View>
-
-      
+ 
         <Modal 
             transparent={true}
             visible={modalVisible} 
             onDismiss={closeModal} 
-            // contentContainerStyle={}
             animationType='slide'
         >
           <View style={styles.modalContainer}>
@@ -98,11 +103,24 @@ const Filters = () => {
             <View style={styles.modalWrap}>
             <View style={styles.modalBtnContainer}>
               <Text style={styles.modalText}>
+                All
+              </Text>
+              <View style={styles.radioBtn}>
+                <TouchableOpacity
+                    onPress={()=>setStatus({...status,all:true,active:false,inactive:false})}
+                >
+                {!status.all ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
+                </TouchableOpacity>
+
+                </View>
+            </View>
+            <View style={styles.modalBtnContainer}>
+              <Text style={styles.modalText}>
                 Active
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setStatus({...status,active:!status.active})}
+                    onPress={()=>setStatus({...status,all:false,active:true,inactive:false})}
                 >
                 {!status.active ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
@@ -115,7 +133,7 @@ const Filters = () => {
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setStatus({...status,inactive:!status.inactive})}
+                    onPress={()=>setStatus({...status,all:false,active:false,inactive:true})}
                 >
                 {!status.inactive ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
@@ -127,29 +145,8 @@ const Filters = () => {
     </View>
   )
 }
-const styles = StyleSheet.create({
-  sortText : {
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginRight:10
-  },
-    filterText : {
-    fontWeight : 'bold',
-    fontSize : 15,
-    marginRight : 10
-  },
-  filterBtn : {
-     flexDirection:'row',
-     marginTop: 10,
-     marginBottom: 10,
-  },
-    sortBtn : {
-    flexDirection:'row',
-    marginTop: 10,
-    marginBottom: 10,
-    marginRight: 15,
-  },
 
+const styles = StyleSheet.create({
  filterContainer:{
     flexDirection : 'column'
   },
@@ -157,41 +154,27 @@ const styles = StyleSheet.create({
     fontSize : 23,
     fontWeight : '600'
   },
-
-  dropdownContainer : {
-    position : 'absolute',
-    left : 140,
-    width:230,
-  },
-  menu : {
-
-  },
-  
-  dropdown : {
-    
-  },
   container : {
-    padding:10
-  },
- 
-  filterHeader:{
-    fontSize: 20,
-    fontWeight: '700',
-    padding : 10
+    padding:10,
+    marginTop:5
   },
   btnContainer:{
     flexDirection: 'row',
-    // backgroundColor: '#ae9df7'
   },
   roleBtn: {
     flexDirection:'row',
     width:'100%',
-    backgroundColor: '#fcefef',
-    padding:10,
+    borderWidth:2,
+    padding:9,
     borderRadius:20
   },
+    filterHeader:{
+    fontSize: 22,
+    fontWeight: '700',
+    padding : 10
+  },
   selectText : {
-    fontSize:15,
+    fontSize:18,
     fontWeight: '500'
   },
     closeContainer : {
@@ -202,7 +185,6 @@ const styles = StyleSheet.create({
   },
     modalBtnContainer : {
     flexDirection : 'row',
-    marginBottom : 10
   },
     modalText : {
         fontSize:20,
@@ -215,22 +197,17 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:'flex-end',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    
-    // backgroundColor:'rgba(0,0,0,0.8)',
   },
   modalWrap : {
-    backgroundColor:'#fcefef',
     borderTopRightRadius:40,
-    borderTopLeftRadius:40
+    borderTopLeftRadius:40,
+    backgroundColor: 'rgb(255, 255, 255)',
   },
   bottomBtnContainer : {
-    // flex: 1,
-    // justifyContent:'flex-end',
     top:550
   },
   btnWrap: {
     flexDirection:'row',
-    backgroundColor:'#fcefef',
     height:70,
     borderTopRightRadius:40,
     borderTopLeftRadius:40,
@@ -238,27 +215,25 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   clearBtn : {
-    backgroundColor : '#e7e4e4',
+    backgroundColor : '#5f5e5e',
     padding : 15,
     borderRadius : 15,
-    borderWidth:1,
+    borderWidth:2,
     marginRight:50,
-    // marginLeft:100,
-    // marginTop: 20,
-    // margi
-    height:50
   },
   applyBtn : {
-    backgroundColor : '#dedef5',
+    backgroundColor : '#4040f7',
     padding : 15,
     borderRadius : 15,
-    borderWidth:1,
+    borderWidth:2,
   },
   clearText : {
+    color:'#fff',
     fontSize : 15,
     fontWeight : 'bold'
   },
   applyText : {
+    color:'#fff',
     fontSize : 15,
     fontWeight : 'bold'
   },
@@ -268,6 +243,22 @@ const styles = StyleSheet.create({
     alignItems:'flex-end',
     padding:20,
     marginRight:30
+  },
+  badgeContainer : {
+    position:'absolute',
+    top: 10,
+    left:60,
+    backgroundColor:'#0596f7',
+    height:30,
+    width:30,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:15,
+  },
+  badgeText : {
+    fontSize : 20,
+    fontWeight:'700',
+    color: '#fff'
   }
 })
 

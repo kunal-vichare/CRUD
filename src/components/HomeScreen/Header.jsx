@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet,TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet,TextInput, TouchableHighlight } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Filter from 'react-native-vector-icons/Feather';
@@ -7,10 +7,13 @@ import Add from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Fontisto';
 // import Search from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
+import { useRoute } from '@react-navigation/native';
 
 const Header = ({search,setSearch}) => {
     const [showSearch,setShowSearch] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute();
+    const trueCount = route.params?.trueCount;
   return (
     <View>
         <View style={styles.container}>
@@ -19,8 +22,15 @@ const Header = ({search,setSearch}) => {
                 <Text style={styles.viewAllText}>View All</Text>
             </View>
             <View style={styles.btnContainer}>
+                
+                { trueCount>0 && (
+                <View style={styles.badgeContainer}>
+                    <Text style={styles.badgeText}>{trueCount}</Text>
+                </View>
+                )}
+                
                 <TouchableOpacity 
-                    style={styles.filterBtn}
+                    style= {!trueCount>0 ? styles.inactiveFilterBtn : styles.activeFilterBtn}
                     onPress={()=>{navigation.navigate("Filters")}}
                 >
                     <Filter name="filter" size={30} />
@@ -28,17 +38,19 @@ const Header = ({search,setSearch}) => {
                 <Text style={styles.divider}>|</Text>
                 <TouchableOpacity 
                     style= {!showSearch ? styles.inactiveSearchBtn : styles.activeSearchBtn }
-                    onPress={()=>setShowSearch(true)}
+                    onPress={()=>setShowSearch(!showSearch)}
                 >
                     <Search name="search" size={30} />
                 </TouchableOpacity>
                 <Text style={styles.divider}>|</Text>
-                <TouchableOpacity 
+                <TouchableHighlight 
+                    underlayColor={'#628fff'}
                     style={styles.addBtn}
                     onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
+                    // onPress={()=> navigation.navigate('Empty State')}
                 >
                     <Add name="plus-circle" size={30} />
-                </TouchableOpacity>
+                </TouchableHighlight>
             </View>
         </View>
         <Divider style={{height:2,marginTop:10}}/>
@@ -85,9 +97,15 @@ const styles = StyleSheet.create({
         fontSize:15,
         fontWeight:'500'
     },
-    filterBtn : {
+    inactiveFilterBtn : {
         padding:5,
         marginRight: 5
+    },
+        activeFilterBtn : {
+        padding:5,
+        marginRight: 5,
+        backgroundColor:'#628fff',
+        borderRadius:20
     },
     inactiveSearchBtn : {
         padding:5,
@@ -99,9 +117,13 @@ const styles = StyleSheet.create({
         backgroundColor:'#628fff',
         borderRadius:20
     },
+
     addBtn : {
         padding:5,
-        marginRight: 5
+        marginRight: 5,
+        backgroundColor:'#fff',
+        // backgroundColor:'#628fff',
+        borderRadius:20,
     },
     divider : {
         marginRight: 5,
@@ -134,7 +156,24 @@ const styles = StyleSheet.create({
     },
         closeContainer : {
             marginTop:12
-        }
+        },
+    badgeContainer : {
+    position:'absolute',
+    zIndex:1,
+    top: -2,
+    left:165,
+    backgroundColor:'#f707cb',
+    height:25,
+    width:25,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:15,
+  },
+  badgeText : {
+    fontSize : 15,
+    fontWeight:'700',
+    color: '#fff'
+  }
 
 })
 

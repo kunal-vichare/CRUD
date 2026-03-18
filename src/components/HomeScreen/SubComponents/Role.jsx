@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import Circle from 'react-native-vector-icons/Feather';
 import Check_Circle from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const Role = () => {
   const[role,setRole]=useState({
@@ -11,9 +12,10 @@ const Role = () => {
     ceo : false,
     director : false,
   })
+  const navigation = useNavigation();
 
-  // const trueCount = role.filter(item => item === true).length;
-  // console.log(role);
+  const trueCount = Object.values(role).filter(item => item === true).length;
+
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>
@@ -66,15 +68,18 @@ const Role = () => {
                 <View style={styles.btnWrap}>
                   <TouchableOpacity 
                     style={styles.clearBtn}
-                    onPress={()=>setRole({manager:'',admin:'',user:'',ceo:'',director:''})}
+                    onPress={()=>setRole({manager:false,admin:false,user:false,ceo:false,director:false})}
                     >
                     <Text style={styles.clearText}>
-                      Clear
+                      Clear Filter
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.applyBtn}>
+                  <TouchableOpacity 
+                    style={styles.confirmBtn}
+                    onPress={()=>{navigation.navigate("Filters",{trueCount : trueCount})}}
+                  >
                     <Text style={styles.applyText}>
-                      Apply
+                      Confirm
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -89,10 +94,11 @@ const styles = StyleSheet.create({
   },
   itemContainer : {
     flexDirection:'row',
-    backgroundColor: '#fcefef',
-    borderRadius:20,
+    // backgroundColor: '#fcefef',
+    borderWidth:2,
+    borderRadius:30,
     padding:15,
-    marginBottom:10
+    marginBottom:15
   },
   btn : {
     flex:1,
@@ -105,41 +111,43 @@ const styles = StyleSheet.create({
   bottomBtnContainer : {
     // flex: 1,
     // justifyContent:'flex-end',
-    top:440
+    top:380
   },
   btnWrap: {
     flexDirection:'row',
-    backgroundColor:'#fcefef',
-    height:70,
-    borderTopRightRadius:40,
-    borderTopLeftRadius:40,
+    // backgroundColor:'#fcefef',
+    // height:70,
+    // borderTopRightRadius:40,
+    // borderTopLeftRadius:40,
     alignItems:'center',
     justifyContent:'center',
   },
   clearBtn : {
-    backgroundColor : '#e7e4e4',
+    backgroundColor : '#5f5e5e',
     padding : 15,
     borderRadius : 15,
-    borderWidth:1,
+    borderWidth:2,
     marginRight:50,
     // marginLeft:100,
     // marginTop: 20,
     // margi
     height:50
   },
-  applyBtn : {
-    backgroundColor : '#dedef5',
+  confirmBtn : {
+    backgroundColor : '#4040f7',
     padding : 15,
     borderRadius : 15,
-    borderWidth:1,
+    borderWidth:2,
   },
   clearText : {
     fontSize : 15,
-    fontWeight : 'bold'
+    fontWeight : 'bold',
+    color:'#fff'
   },
   applyText : {
     fontSize : 15,
-    fontWeight : 'bold'
+    fontWeight : 'bold',
+    color:'#fff'
   },
 
 })
