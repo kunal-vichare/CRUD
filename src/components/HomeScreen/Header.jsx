@@ -5,7 +5,6 @@ import Filter from 'react-native-vector-icons/Feather';
 import Search from 'react-native-vector-icons/Feather';
 import Add from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Fontisto';
-// import Search from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
 import { useRoute } from '@react-navigation/native';
 
@@ -14,6 +13,9 @@ const Header = ({search,setSearch}) => {
     const navigation = useNavigation();
     const route = useRoute();
     const trueCount = route.params?.trueCount;
+    const trueStatusCount = route.params?.trueStatusCount;
+    console.log("truecount"+trueCount);
+    console.log("trueStatuscount"+trueStatusCount)
   return (
     <View>
         <View style={styles.container}>
@@ -23,9 +25,9 @@ const Header = ({search,setSearch}) => {
             </View>
             <View style={styles.btnContainer}>
                 
-                { trueCount>0 && (
+                { trueCount+trueStatusCount>0 && (
                 <View style={styles.badgeContainer}>
-                    <Text style={styles.badgeText}>{trueCount}</Text>
+                    <Text style={styles.badgeText}>{trueCount+trueStatusCount}</Text>
                 </View>
                 )}
                 
@@ -47,7 +49,6 @@ const Header = ({search,setSearch}) => {
                     underlayColor={'#628fff'}
                     style={styles.addBtn}
                     onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
-                    // onPress={()=> navigation.navigate('Empty State')}
                 >
                     <Add name="plus-circle" size={30} />
                 </TouchableHighlight>

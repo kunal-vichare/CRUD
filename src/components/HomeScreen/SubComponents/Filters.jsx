@@ -8,22 +8,39 @@ import Check_Circle from 'react-native-vector-icons/Feather';
 import { useRoute } from '@react-navigation/native';
 
 const Filters = () => {
-    const[status,setStatus] = useState({
-      all: false,
-      active : false,
-      inactive : false
+      const[filter,setFilter] = useState({
+      status : {
+        all: false,
+        active : false,
+        inactive : false
+      },
+      // roles : []
     })
+
     const [modalVisible,setModalVisible] = useState(false);
     const openModal = () => setModalVisible(true);
     const closeModal = () => setModalVisible(false);
     const navigation = useNavigation();
     const route = useRoute();
-    const trueCount = route.params?.trueCount || null;
-    const activeRoles = route.params?.activeRoles || null;
-    console.log(activeRoles)
 
-    const trueStatusCount = Object.values(status).filter(item => item === true).length;
-    const activeStatus = Object.keys(status).find(item=>status[item]===true);
+    //trueCount for badge no of elements
+    const trueCount = route.params?.trueCount || null;
+    //activeStatus for active Status eg.active,inactive
+    const activeStatus = route.params?.activeStatus || Object.keys(filter.status).find(item=>filter.status[item]===true);
+    //trueStatusCount is no of true's in status always 1
+    const trueStatusCount = route.params?.trueStatusCount || Object.values(filter.status).filter(item => item === true).length;
+    //SelectedStatus is key of selected status eg active etc 
+    const SelectedStatus = route.params?.SelectedStatus;
+    //activeRoles is array of current true roles
+    const activeRoles = route.params?.activeRoles;
+
+    // console.log("Active Roles: "+activeRoles)
+    // console.log("Type of Active Roles: "+typeof(activeRoles))
+    // console.log("Selected Status: "+SelectedStatus)
+    // console.log("Active Status: "+activeStatus)
+    // console.log("Type of Active Status: "+typeof(activeStatus))
+    // console.log("True Status Count: "+trueStatusCount)
+
   return (
   <View style={styles.container}>
     <View style={styles.filterContainer}>
@@ -31,7 +48,7 @@ const Filters = () => {
             Role
         </Text>
         { trueCount>0 && (
-        <View style={styles.badgeContainer}>
+        <View style={styles.roleBadgeContainer}>
           <Text style={styles.badgeText}>{trueCount}</Text>
         </View>
         )}
@@ -39,7 +56,7 @@ const Filters = () => {
         <View style={styles.btnContainer}>
             <TouchableOpacity 
               style={styles.roleBtn}
-              onPress={()=>{navigation.navigate("Role")}}
+              onPress={()=>{navigation.navigate("Role",{activeStatus : activeStatus , trueStatusCount : trueStatusCount})}}
             >
                 <View>
                     <Text style={styles.selectText}>
@@ -52,7 +69,7 @@ const Filters = () => {
             </TouchableOpacity>
         </View>
 
-        {!trueStatusCount>0 && (
+        {(
           <View style={styles.rolesContainer}>
           {activeRoles?.map((item,index) => (
                 <View 
@@ -72,6 +89,13 @@ const Filters = () => {
         <Text style={styles.filterHeader}>
             Status
         </Text>
+
+        { trueStatusCount>0 && (
+        <View style={styles.statusBadgeContainer}>
+          <Text style={styles.badgeText}>{trueStatusCount}</Text>
+        </View>
+        )}
+
         <View style={styles.btnContainer}>
             <TouchableOpacity 
                 style={styles.roleBtn}
@@ -96,16 +120,24 @@ const Filters = () => {
                     </View>
                   }
 
+    </View>
         <View style={styles.bottomBtnContainer}>
           <View style={styles.btnWrap}>
-            <TouchableOpacity style={styles.clearBtn}>
+            <TouchableOpacity 
+              style={styles.clearBtn}
+              onPress={()=>setFilter({...filter,status: {all :false,active:false,inactive:false}})}
+            >
               <Text style={styles.clearText}>
                 Clear
               </Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.applyBtn}
-              onPress={()=>{navigation.navigate("All users",{trueCount : trueCount})}}
+              onPress={()=>{navigation.navigate("All users",{filters : {
+                status : activeStatus,
+                roles : activeRoles
+              }, trueCount:trueCount,trueStatusCount:trueStatusCount});
+            }}
             >
               <Text style={styles.applyText}>
                 Apply
@@ -113,7 +145,6 @@ const Filters = () => {
             </TouchableOpacity>
           </View>
         </View>
-    </View>
  
         <Modal 
             transparent={true}
@@ -128,28 +159,28 @@ const Filters = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.modalWrap}>
-            <View style={styles.modalBtnContainer}>
+            {/* <View style={styles.modalBtnContainer}>
               <Text style={styles.modalText}>
                 All
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setStatus({...status,all:true,active:false,inactive:false})}
+                    onPress={()=>setFilter({...filter,status: {all :true,active:false,inactive:false}})}
                 >
-                {!status.all ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
+                {!filter.status.all ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
 
                 </View>
-            </View>
+            </View> */}
             <View style={styles.modalBtnContainer}>
               <Text style={styles.modalText}>
                 Active
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setStatus({...status,all:false,active:true,inactive:false})}
+                    onPress={()=>setFilter({...filter,status: {all :false,active:true,inactive:false}})}
                 >
-                {!status.active ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
+                {!filter.status.active ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
 
                 </View>
@@ -160,9 +191,9 @@ const Filters = () => {
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setStatus({...status,all:false,active:false,inactive:true})}
+                    onPress={()=>setFilter({...filter,status: {all :false,active:false,inactive:true}})}
                 >
-                {!status.inactive ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
+                {!filter.status.inactive ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
                 </View>
             </View>
@@ -182,8 +213,9 @@ const styles = StyleSheet.create({
     fontWeight : '600'
   },
   container : {
+    flex:1,
     padding:10,
-    marginTop:5
+    // marginTop:5
   },
   btnContainer:{
     flexDirection: 'row',
@@ -227,22 +259,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalWrap : {
+    // marginTop:20,
     borderTopRightRadius:40,
     borderTopLeftRadius:40,
     backgroundColor: 'rgb(255, 255, 255)',
   },
   bottomBtnContainer : {
+    position:'absolute',
+    bottom:20,
+    left:0,
+    right:0,
+    padding:15,
+    // borderColor:'#ccc'
     // top:550
   },
   btnWrap: {
-    position:'absolute',
-    top:480,
-    left:100,
+    // position:'absolute',
+    // top:480,
+    // left:100,
     flexDirection:'row',
-    height:70,
-    borderTopRightRadius:40,
-    borderTopLeftRadius:40,
-    alignItems:'center',
+    // height:70,
+    // borderTopRightRadius:40,
+    // borderTopLeftRadius:40,
+    // alignItems:'center',
     justifyContent:'center',
   },
   clearBtn : {
@@ -279,10 +318,21 @@ const styles = StyleSheet.create({
     padding:20,
     marginRight:30
   },
-  badgeContainer : {
+  roleBadgeContainer : {
     position:'absolute',
     top: 10,
     left:60,
+    backgroundColor:'#0596f7',
+    height:30,
+    width:30,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:15,
+  },
+  statusBadgeContainer:{
+    position:'absolute',
+    top: 10,
+    left:80,
     backgroundColor:'#0596f7',
     height:30,
     width:30,

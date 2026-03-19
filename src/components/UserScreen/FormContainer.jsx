@@ -40,16 +40,16 @@ const FormContainer = ({formData,setFormData}) => {
     }
 
     const data = [
-    {label: 'React Developer',value: 1},
-    {label: 'SQL Developer',value: 2},
-    {label: 'Java Developer',value: 3},
-    {label: 'JavaScript Developer',value: 4},
-    {label: 'Other',value: 5}
+    {label: 'manager',value: 1},
+    {label: 'admin',value: 2},
+    {label: 'user',value: 3},
+    {label: 'ceo',value: 4},
+    {label: 'director',value: 5}
     ];
 
     const status = [
-    {label: 'Active',value : 1},
-    {label:'Inactive',value : 2},
+    {label: 'active',value : 1},
+    {label:'inactive',value : 2},
     ];
 
     const handleInput = (field,value) => {

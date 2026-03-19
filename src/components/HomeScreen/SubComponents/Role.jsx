@@ -3,9 +3,11 @@ import React, { useState } from 'react'
 import Circle from 'react-native-vector-icons/Feather';
 import Check_Circle from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const Role = () => {
   const[role,setRole]=useState({
+    all : false,
     manager : false,
     admin : false,
     user : false,
@@ -13,12 +15,32 @@ const Role = () => {
     director : false,
   })
   const navigation = useNavigation();
+  const route = useRoute();
 
+  //selectedStatus current selected status eg. active inactive
+  const SelectedStatus = route.params?.SelectedStatus
+  //trueStatusCount is how much true values in status always 1
+  const trueStatusCount = route.params?.trueStatusCount
+  //activeStatus for active Status eg.active,inactive
+  const activeStatus = route.params?.activeStatus
+  //trueCount for badge number
   const trueCount = Object.values(role).filter(item => item === true).length;
+  //activeRoles for array of current active roles
   const activeRoles = Object.keys(role).filter(item=>role[item]===true)
-  // console.log(activeRoles)
+
   return (
     <View style={styles.container}>
+      {/* <View style={styles.itemContainer}>
+        <Text style={styles.text}>All</Text>
+        <TouchableOpacity 
+          style={styles.btn}
+          onPress={()=>setRole({...role, all : !role.all    
+          })}
+        >
+          {!role.all ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
+        </TouchableOpacity>
+      </View> */}
+
       <View style={styles.itemContainer}>
         <Text style={styles.text}>Manager</Text>
         <TouchableOpacity 
@@ -28,6 +50,7 @@ const Role = () => {
           {!role.manager ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
       </View>
+
       <View style={styles.itemContainer}>
         <Text style={styles.text}>Admin</Text>
         <TouchableOpacity 
@@ -37,6 +60,7 @@ const Role = () => {
           {!role.admin ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
       </View>
+
       <View style={styles.itemContainer}>
         <Text style={styles.text}>User</Text>
         <TouchableOpacity 
@@ -46,6 +70,7 @@ const Role = () => {
           {!role.user ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
       </View>
+
       <View style={styles.itemContainer}>
         <Text style={styles.text}>CEO</Text>
         <TouchableOpacity 
@@ -55,6 +80,7 @@ const Role = () => {
           {!role.ceo ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
       </View>
+
       <View style={styles.itemContainer}>
         <Text style={styles.text}>Director</Text>
         <TouchableOpacity 
@@ -65,6 +91,7 @@ const Role = () => {
         </TouchableOpacity>
         {/* <Text>{trueCount}</Text> */}
       </View>
+
       <View style={styles.bottomBtnContainer}>
                 <View style={styles.btnWrap}>
                   <TouchableOpacity 
@@ -77,7 +104,16 @@ const Role = () => {
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.confirmBtn}
-                    onPress={()=>{navigation.navigate("Filters",{trueCount : trueCount,activeRoles:activeRoles})}}
+                    onPress={()=>{
+                      navigation.navigate({
+                      name : 'Filters',
+                      params : {activeRoles : activeRoles , SelectedStatus : SelectedStatus, trueCount : trueCount ,
+                      trueStatusCount: trueStatusCount , activeStatus : activeStatus
+                      },
+                      merge : true,
+                      });
+                      // navigation.goBack();
+                    }}
                   >
                     <Text style={styles.applyText}>
                       Confirm
@@ -112,10 +148,19 @@ const styles = StyleSheet.create({
   bottomBtnContainer : {
     // flex: 1,
     // justifyContent:'flex-end',
-    top:380
+    // bottom:0
+    // backgroundColor:'yellow'
   },
   btnWrap: {
+    // position:'absolute',
+    // bottom:0,
+    // left:0,
+    // right:0,
+    // marginTop:270,
+    marginTop:320,
+    // top:50,
     flexDirection:'row',
+    // backgroundColor:'red',
     // backgroundColor:'#fcefef',
     // height:70,
     // borderTopRightRadius:40,
