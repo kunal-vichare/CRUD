@@ -8,35 +8,42 @@ import Check_Circle from 'react-native-vector-icons/Feather';
 import { useRoute } from '@react-navigation/native';
 
 const Filters = () => {
+    const navigation = useNavigation();
+    const route = useRoute();
       const[filter,setFilter] = useState({
       status : {
         all: false,
         active : false,
         inactive : false
-      },
-      // roles : []
+      }
     })
+
+    const clearFilter = () => {
+      setFilter({...filter,status: {all :false,active:false,inactive:false}}),
+      navigation.setParams({activeRoles:[],trueCount:null})
+    }
 
     const [modalVisible,setModalVisible] = useState(false);
     const openModal = () => setModalVisible(true);
     const closeModal = () => setModalVisible(false);
-    const navigation = useNavigation();
-    const route = useRoute();
+
 
     //trueCount for badge no of elements
     const trueCount = route.params?.trueCount || null;
-    //activeStatus for active Status eg.active,inactive
-    const activeStatus = route.params?.activeStatus || Object.keys(filter.status).find(item=>filter.status[item]===true);
+
+    //activeStatus for array of active Status eg.[active,inactive]
+    const activeStatus =   Object.keys(filter.status).filter(item=>filter.status[item]===true) || route.params?.activeStatus;
+
     //trueStatusCount is no of true's in status always 1
     const trueStatusCount = route.params?.trueStatusCount || Object.values(filter.status).filter(item => item === true).length;
-    //SelectedStatus is key of selected status eg active etc 
-    const SelectedStatus = route.params?.SelectedStatus;
+
     //activeRoles is array of current true roles
     const activeRoles = route.params?.activeRoles;
+
     //Total applied filters
     const totalFilters = trueStatusCount + trueCount
 
-    // console.log("Active Roles: "+activeRoles)
+    console.log("Active Roles: "+activeRoles)
     // console.log("Type of Active Roles: "+typeof(activeRoles))
     // console.log("Selected Status: "+SelectedStatus)
     // console.log("Active Status: "+activeStatus)
@@ -120,20 +127,28 @@ const Filters = () => {
                 </View>
             </TouchableOpacity>
         </View>
-                  {
-                    trueStatusCount>0 && 
-                    <View style={styles.showStatus}> 
-                    <Text style={styles.statusText}>
-                      {activeStatus}
-                    </Text> 
-                    </View>
-                  }
+
+          {trueStatusCount>0 && (
+          <View style={styles.rolesContainer}>
+          {activeStatus?.map((item,index) => (
+                <View 
+                  key={index} 
+                  style={styles.showStatus}>
+                <Text  
+                  style={styles.statusText}>
+                  {item}
+                </Text>
+              </View>
+              ))}
+          </View>
+        )}
+
     </View>
         <View style={styles.bottomBtnContainer}>
           <View style={styles.btnWrap}>
             <TouchableOpacity 
               style={styles.clearBtn}
-              onPress={()=>setFilter({...filter,status: {all :false,active:false,inactive:false}})}
+              onPress={clearFilter}
             >
               <Text style={styles.clearText}>
                 Clear

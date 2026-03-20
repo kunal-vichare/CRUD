@@ -14,7 +14,7 @@ const Home_Screen = ({ navigation }) => {
   const dataToFilter = route.params?.filters;
 
   const [filters,setFilters] = useState({
-    status : null,
+    status : [],
     roles : []
   });
 
@@ -24,7 +24,7 @@ const Home_Screen = ({ navigation }) => {
     }
   },[dataToFilter]);
 
-  // console.log(dataToFilter)
+  console.log("Data to filter"+dataToFilter)
   const [loader,setLoader] = useState(false);
 
   // Get all users
@@ -64,8 +64,8 @@ const Home_Screen = ({ navigation }) => {
     //search filter
     const searchMatch = item.name.toLowerCase().includes(search.toLowerCase());
     //status filter
-    const statusMatch = filters.status 
-    ? item.status.label === filters.status : true;
+    const statusMatch = filters.status.length > 0
+    ? filters.status.includes(item.status.label) : true ;
     //roles filter
     const roleMatch = filters.roles.length > 0 
     ? filters.roles.includes(item.role.label) : true ;

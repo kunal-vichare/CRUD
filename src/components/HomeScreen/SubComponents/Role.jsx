@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Circle from 'react-native-vector-icons/Feather';
 import Check_Circle from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 
 const Role = () => {
+
   const[role,setRole]=useState({
     all : false,
     manager : false,
@@ -17,16 +18,18 @@ const Role = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  //selectedStatus current selected status eg. active inactive
-  const SelectedStatus = route.params?.SelectedStatus
+  // const setRolesTrue = ()=>Object.keys(role).forEach(item=>role[item]=true);
+
   //trueStatusCount is how much true values in status always 1
   const trueStatusCount = route.params?.trueStatusCount
-  //activeStatus for active Status eg.active,inactive
+  //activeStatus for array of active Status eg.[active,inactive]
   const activeStatus = route.params?.activeStatus
-  //trueCount for badge number
+  //trueCount is no of true role for badge number
   const trueCount = Object.values(role).filter(item => item === true).length;
   //activeRoles for array of current active roles
   const activeRoles = Object.keys(role).filter(item=>role[item]===true)
+
+  // console.log("Selected Status: "+SelectedStatus)
 
   return (
     <View style={styles.container}>
@@ -37,16 +40,17 @@ const Role = () => {
           </Text>
         </View>
       )}
-      <View style={styles.itemContainer}>
+      {/* <View style={styles.itemContainer}>
         <Text style={styles.text}>All</Text>
         <TouchableOpacity 
           style={styles.btn}
           onPress={()=>setRole({...role, all : !role.all    
           })}
+          // onPress={setRolesTrue}
         >
           {!role.all ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.itemContainer}>
         <Text style={styles.text}>Manager</Text>
@@ -114,8 +118,12 @@ const Role = () => {
                     onPress={()=>{
                       navigation.navigate({
                       name : 'Filters',
-                      params : {activeRoles : activeRoles , SelectedStatus : SelectedStatus, trueCount : trueCount ,
-                      trueStatusCount: trueStatusCount , activeStatus : activeStatus
+                      // SelectedStatus : SelectedStatus,
+                      params : {
+                        activeRoles : activeRoles ,
+                        activeStatus : activeStatus, 
+                        trueCount : trueCount ,
+                        trueStatusCount: trueStatusCount, 
                       },
                       merge : true,
                       });
