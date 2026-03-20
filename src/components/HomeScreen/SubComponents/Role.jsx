@@ -30,7 +30,14 @@ const Role = () => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.itemContainer}>
+      {trueCount>0 && (
+        <View style={styles.selectedRolesContainer}>
+          <Text style={styles.selectedRolesText}>
+            {"Selected Roles: " + trueCount}
+          </Text>
+        </View>
+      )}
+      <View style={styles.itemContainer}>
         <Text style={styles.text}>All</Text>
         <TouchableOpacity 
           style={styles.btn}
@@ -39,7 +46,7 @@ const Role = () => {
         >
           {!role.all ? <Circle name="circle" size={24} /> : <Check_Circle name="check-circle" size={24}/>}
         </TouchableOpacity>
-      </View> */}
+      </View>
 
       <View style={styles.itemContainer}>
         <Text style={styles.text}>Manager</Text>
@@ -92,7 +99,7 @@ const Role = () => {
         {/* <Text>{trueCount}</Text> */}
       </View>
 
-      <View style={styles.bottomBtnContainer}>
+              <View style={styles.bottomBtnContainer}>
                 <View style={styles.btnWrap}>
                   <TouchableOpacity 
                     style={styles.clearBtn}
@@ -145,27 +152,25 @@ const styles = StyleSheet.create({
     fontSize:15,
     fontWeight:'900'
   },
-  bottomBtnContainer : {
-    // flex: 1,
-    // justifyContent:'flex-end',
-    // bottom:0
-    // backgroundColor:'yellow'
+    bottomBtnContainer : {
+    position:'absolute',
+    // bottom:0,
+    left:0,
+    right:0,
+    top:750,
+    padding:15,
+    // borderColor:'#ccc'
+    // top:550
   },
   btnWrap: {
     // position:'absolute',
-    // bottom:0,
-    // left:0,
-    // right:0,
-    // marginTop:270,
-    marginTop:320,
-    // top:50,
+    // top:480,
+    // left:100,
     flexDirection:'row',
-    // backgroundColor:'red',
-    // backgroundColor:'#fcefef',
     // height:70,
     // borderTopRightRadius:40,
     // borderTopLeftRadius:40,
-    alignItems:'center',
+    // alignItems:'center',
     justifyContent:'center',
   },
   clearBtn : {
@@ -195,6 +200,22 @@ const styles = StyleSheet.create({
     fontWeight : 'bold',
     color:'#fff'
   },
+    selectedRolesContainer : {
+    // position : 'absolute',
+    right:0,
+    left:5,
+    width:165,
+    height:32,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: '#e2f512',
+    borderRadius:30,
+    marginBottom:15,
+  },
+  selectedRolesText : {
+    fontSize:18,
+    fontWeight:'900'
+  }
 
 })
 

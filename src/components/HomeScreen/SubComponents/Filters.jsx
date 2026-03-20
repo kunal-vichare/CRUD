@@ -33,6 +33,8 @@ const Filters = () => {
     const SelectedStatus = route.params?.SelectedStatus;
     //activeRoles is array of current true roles
     const activeRoles = route.params?.activeRoles;
+    //Total applied filters
+    const totalFilters = trueStatusCount + trueCount
 
     // console.log("Active Roles: "+activeRoles)
     // console.log("Type of Active Roles: "+typeof(activeRoles))
@@ -52,6 +54,13 @@ const Filters = () => {
           <Text style={styles.badgeText}>{trueCount}</Text>
         </View>
         )}
+        {
+          totalFilters>0 && (
+            <View style={styles.totalFilter}>
+              <Text style={styles.totalFilterText}>{"Total Filters: " + totalFilters}</Text>
+            </View>
+          )
+        }
 
         <View style={styles.btnContainer}>
             <TouchableOpacity 
@@ -119,7 +128,6 @@ const Filters = () => {
                     </Text> 
                     </View>
                   }
-
     </View>
         <View style={styles.bottomBtnContainer}>
           <View style={styles.btnWrap}>
@@ -159,19 +167,19 @@ const Filters = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.modalWrap}>
-            {/* <View style={styles.modalBtnContainer}>
+            <View style={styles.modalBtnContainer}>
               <Text style={styles.modalText}>
                 All
               </Text>
               <View style={styles.radioBtn}>
                 <TouchableOpacity
-                    onPress={()=>setFilter({...filter,status: {all :true,active:false,inactive:false}})}
+                    onPress={()=>setFilter({...filter,status: {all :false,active:true,inactive:true}})}
                 >
                 {!filter.status.all ? <Circle name="circle" size={24}/> : <Check_Circle name="check-circle" size={24}/>}
                 </TouchableOpacity>
 
                 </View>
-            </View> */}
+            </View>
             <View style={styles.modalBtnContainer}>
               <Text style={styles.modalText}>
                 Active
@@ -379,6 +387,20 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'700',
     marginLeft : 15,
+  },
+  totalFilter : {
+    position : 'absolute',
+    right:0,
+    width:135,
+    height:30,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: '#e2f512',
+    borderRadius:30
+  },
+  totalFilterText : {
+    fontSize:18,
+    fontWeight:'900'
   }
 
 })

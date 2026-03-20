@@ -7,6 +7,7 @@ import Floatingbtn from "../components/HomeScreen/Floatingbtn";
 import Header from "../components/HomeScreen/Header";
 import { useRoute } from '@react-navigation/native';
 import EmptyState from '../components/HomeScreen/SubComponents/EmptyState';
+import Loader from '../components/HomeScreen/SubComponents/Loader';
 
 const Home_Screen = ({ navigation }) => {
   const route = useRoute();
@@ -24,13 +25,21 @@ const Home_Screen = ({ navigation }) => {
   },[dataToFilter]);
 
   // console.log(dataToFilter)
+  const [loader,setLoader] = useState(false);
 
   // Get all users
   const [myData,setMyData] = useState([ ]);
 
-  const loadUsers = async() => {
-    const data = await getAllUsers();
-    setMyData(data);
+  const loadUsers = async()=>{
+    try {
+      setLoader(true);
+      const data = await getAllUsers();
+      setMyData(data);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoader(false);
+    }
   }
 
     useFocusEffect(
@@ -45,7 +54,7 @@ const Home_Screen = ({ navigation }) => {
   const[refreshing,setRefreshing]= useState(false);
   const onRefresh = async ()=> {
     setRefreshing(true);
-    loadUsers();
+    await loadUsers();
     setRefreshing(false);
   };
   
@@ -60,6 +69,7 @@ const Home_Screen = ({ navigation }) => {
     //roles filter
     const roleMatch = filters.roles.length > 0 
     ? filters.roles.includes(item.role.label) : true ;
+
     return searchMatch && statusMatch && roleMatch
   });
 
@@ -69,7 +79,9 @@ const Home_Screen = ({ navigation }) => {
       <Header search={search} setSearch={setSearch}/>
       {/* <Searchbar search={search} setSearch={setSearch}/> */}
 
-      {finalData.length>0 ?  
+      {loader? 
+      <Loader/> 
+      : finalData.length>0 ?  
       <View style={{height: '92%', flexGrow: 0}}>
         <FlatList
           // data={filteredContacts}

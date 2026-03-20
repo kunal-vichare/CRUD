@@ -8,6 +8,7 @@ import Empty_State from '../components/HomeScreen/SubComponents/EmptyState';
 import Add_Edit_user from '../screens/Add_Edit_user';
 import Filters from '../components/HomeScreen/SubComponents/Filters';
 import Role from '../components/HomeScreen/SubComponents/Role';
+import Loader from '../components/HomeScreen/SubComponents/Loader'
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,13 @@ const StackNavigation = () => {
       <Stack.Screen 
         name='Empty State' 
         component={Empty_State} 
+        options={()=>({
+          headerShown : false
+        })}
+      />
+      <Stack.Screen 
+        name='Loader' 
+        component={Loader} 
         options={()=>({
           headerShown : false
         })}

@@ -48,7 +48,8 @@ const Header = ({search,setSearch}) => {
                 <TouchableHighlight 
                     underlayColor={'#628fff'}
                     style={styles.addBtn}
-                    onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
+                    // onPress={()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}
+                    onPress={()=> navigation.navigate('Loader',{mode : 'add'})}
                 >
                     <Add name="plus-circle" size={30} />
                 </TouchableHighlight>
