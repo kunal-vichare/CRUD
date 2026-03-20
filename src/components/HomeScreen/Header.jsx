@@ -68,7 +68,9 @@ const Header = ({search,setSearch}) => {
             <Search name="search" size={24} style={styles.searchIcon}/>
             <TouchableOpacity 
             style={styles.closeContainer}
-            onPress={()=>setShowSearch(false)}>
+            onPress={
+                ()=>{setShowSearch(false);setSearch("")}
+                }>
                 <Close name="close" size={35} />
             </TouchableOpacity>
             </View>
