@@ -9,7 +9,7 @@ import { useRoute } from '@react-navigation/native';
 import EmptyState from '../components/HomeScreen/SubComponents/EmptyState';
 import Loader from '../components/HomeScreen/SubComponents/Loader';
 
-const Home_Screen = ({ navigation }) => {
+const Home_Screen = () => {
   const route = useRoute();
   const dataToFilter = route.params?.filters;
 
@@ -87,7 +87,7 @@ const Home_Screen = ({ navigation }) => {
           // data={filteredContacts}
           data={finalData}
           renderItem={({item})=>(
-          <FlatlistItems item={item} navigation={navigation} />
+          <FlatlistItems item={item} />
           )}
           keyExtractor={(item)=>item.id}
           refreshing={refreshing}
@@ -100,7 +100,7 @@ const Home_Screen = ({ navigation }) => {
         <EmptyState/> 
       </View>
       }       
-      <Floatingbtn navigation={navigation}/>
+      <Floatingbtn/>
     </View>
   )
 }

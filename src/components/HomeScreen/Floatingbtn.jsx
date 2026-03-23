@@ -1,7 +1,9 @@
 import { View, TouchableOpacity,StyleSheet} from 'react-native'
 import Plus from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
-const Floatingbtn = ({navigation}) => {
+const Floatingbtn = () => {
+  const navigation = useNavigation();
   return (
       <View style={styles.floatingContainer}>
         <TouchableOpacity style={styles.floatingButton} onPress= {()=> navigation.navigate('Add_Edit_user',{mode : 'add'})}>       

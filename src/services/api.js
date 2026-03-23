@@ -30,6 +30,7 @@ export const patchUser = async (id,data)=> {
     return result.data;
   } catch (error) {
     console.log(error)
+    Alert.alert('Error','Failed to Update Data')
   }
 }
 

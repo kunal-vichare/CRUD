@@ -9,41 +9,26 @@ const DynamicButton = ({formData,setFormData}) => {
     const mode = route.params?.mode;
     const navigation = useNavigation();
 
-    //Patch API
-    const handleUpdate = async()=> {
-        try {
-        await patchUser(formData.id,formData)
-        setFormData({name:'',email:'',role:'',phone:'',status:''});
-        navigation.goBack();
-        } catch (error) {
-          console.log(error);         
-        Alert.alert('Error','Failed to Update Data')
-        }
-    }
-
-      //Delete API
-  const handleDelete = async() => {
-    try {
-      await deleteUser(formData.id);
+    const clearForm=()=>{
       setFormData({name:'',email:'',role:'',phone:'',status:''});
-      navigation.goBack();
-    } catch (error) {
-      console.log(error);      
-      Alert.alert('Error','Failed to delete data');
     }
-    };
 
-      // Post API
-      const handleSubmit = async() => {
-        try {
-          await postUser(formData);
-          setFormData({name:'',email:'',role:'',phone:'',status:''});
-          navigation.goBack();
-        } catch (error){
-          console.log(error);
-          Alert.alert('Error','Failed to post the data');
-        }   
+    const handleAction = async() => {
+      try {
+          { 
+            mode === 'edit' ? 
+            await patchUser(formData.id,formData) : 
+            mode === 'delete' ?
+            await deleteUser(formData.id) : 
+            await postUser(formData)
+          }
+        clearForm();
+        navigation.goBack();
+      } catch (error) {
+        console.log(error); 
+        Alert.alert('Error','Something went wrong')
       }
+    }
 
     return (
         <View style={styles.deleteContainer}>
@@ -55,13 +40,7 @@ const DynamicButton = ({formData,setFormData}) => {
             styles.deleteButton :
             styles.saveButton
             }
-            onPress=
-            {mode === 'edit' ? 
-            handleUpdate : 
-            mode === 'delete' ?
-            handleDelete : 
-            handleSubmit
-            }
+            onPress={handleAction}
             >
                 <Text style={{color:'#ffff', fontWeight: 'bold'}}>
                 {

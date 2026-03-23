@@ -9,12 +9,14 @@ import Role from 'react-native-vector-icons/MaterialIcons';
 import Status from 'react-native-vector-icons/Zocial';
 import {Menu, Divider} from 'react-native-paper';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
-const FlatlistItems = ({item,navigation}) => {
+const FlatlistItems = ({item}) => {
   const[dropdown,setDropdown] = useState(false);
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
+  const navigation = useNavigation();
   return (
     <SafeAreaProvider>
       <SafeAreaView>
